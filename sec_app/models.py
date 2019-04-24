@@ -6,3 +6,9 @@ class Location(db.Model):
 
     def __init__(self, name):
         self.name = name
+
+    def toJSON(self):
+        return {
+            'id': self.id,
+            'name': self.name
+        }

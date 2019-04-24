@@ -14,6 +14,9 @@ pipenv run /bin/bash -c 'FLASK_APP=sec_app flask db init'
 
 # Create a migration
 pipenv run /bin/bash -c 'FLASK_APP=sec_app/ flask db migrate'
+
+# Upgrade the DB
+pipenv run /bin/bash -c 'FLASK_APP=sec_app/ flask db upgrade'
 ```
 
 ### Running
@@ -27,5 +30,5 @@ The API will be available at `localhost:8000/api/v1/`, and the Swagger docs will
 
 ### Run Tests
 ```
-pipenv run launch_tests.sh
+pipenv run ./launch_tests.sh
 ```
