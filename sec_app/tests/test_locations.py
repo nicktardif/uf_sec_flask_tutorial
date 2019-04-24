@@ -1,3 +1,4 @@
+from flask import jsonify
 from flask_api import status
 from sec_app import app, db
 from sec_app.models import Location
@@ -7,7 +8,7 @@ import unittest
 class GetLocationTest(SampleTestCase):
     def test_get_location(self):
         # Fill the database with a fake location
-        new_location = Location('Westeros')
+        new_location = Location('Winterfell')
         db.session.add(new_location)
         db.session.commit()
 
@@ -24,10 +25,19 @@ class GetLocationTest(SampleTestCase):
         self.assertEquals(response.json, expected_response)
 
 class GetAllLocationsTest(SampleTestCase):
-    @unittest.skip('yolo')
     def test_get_location(self):
-        pass
+        # Add some fake locations
+        locations = []
+        for name in ['Winterfell', 'The Wall', 'Hardhome']:
+            new_location = Location(name)
+            db.session.add(new_location)
+            locations.append(new_location)
+        db.session.commit()
 
-    @unittest.skip('yolo')
+        response = self.client.get('/api/v1/locations')
+        self.assertEquals(response.status_code, status.HTTP_200_OK)
+        self.assertEquals(response.json, jsonify(locations).json)
+
     def test_get_location_no_data(self):
-        pass
+        response = self.client.get('/api/v1/locations')
+        self.assertEquals(response.status_code, status.HTTP_204_NO_CONTENT)

@@ -6,9 +6,17 @@ from flask import jsonify
 class LocationView():
     @app.route('/api/v1/location/<int:location_id>')
     def get_location(location_id):
-        location = Location.query.get(location_id) 
+        location = Location.query.get(location_id)
         if location:
             return jsonify(location), status.HTTP_200_OK
         else:
             message = 'Location with ID {} not found in the database'.format(location_id)
             return jsonify({'error': message}), status.HTTP_404_NOT_FOUND
+
+    @app.route('/api/v1/locations')
+    def get_all_locations():
+        locations = Location.query.all()
+        if locations:
+            return jsonify(locations), status.HTTP_200_OK
+        else:
+            return '', status.HTTP_204_NO_CONTENT
