@@ -11,6 +11,8 @@ flask-migrate = "*"
 flask-testing = "*"
 nose2 = "*"
 flask-api = "*"
+gunicorn = "*"
+gevent = "*"
 
 [requires]
 python_version = "3.6"

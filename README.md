@@ -22,7 +22,7 @@ pipenv run /bin/bash -c 'FLASK_APP=sec_app/ flask db upgrade'
 ### Running
 ```
 pipenv install # to update the Python packages
-pipenv run run.sh
+./run.sh
 ```
 
 The API will be available at `localhost:8000/api/v1/`, and the Swagger docs will be available at `localhost:8000/api/v1/apidocs`
@@ -30,5 +30,5 @@ The API will be available at `localhost:8000/api/v1/`, and the Swagger docs will
 
 ### Run Tests
 ```
-pipenv run ./launch_tests.sh
+./launch_tests.sh
 ```
