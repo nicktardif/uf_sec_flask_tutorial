@@ -108,6 +108,55 @@ class LocationView():
             message = 'Request did not include a data form, try again'
             return jsonify({'error': message}), status.HTTP_400_BAD_REQUEST
 
+    @app.route('/api/v1/locations/<int:location_id>', methods=['PATCH'])
+    def update_location(location_id):
+        """Updates a location in the database
+        ---
+        tags:
+         - locations
+        parameters:
+          - in: query
+            name: location_id
+            type: integer
+            description: ID of the location to update
+            required: true
+          - in: body
+            name: name
+            type: string
+            description: Name of the Location
+            required: true
+        responses:
+            200:
+                description: Location was updated successfully
+                schema:
+                    $ref: "#/definitions/Location"
+            400:
+                description: Request was not formatted correctly
+                schema:
+                    $ref: "#/definitions/ErrorResponse"
+            404:
+                description: Did not find a location with the specified ID
+                schema:
+                    $ref: "#/definitions/ErrorResponse"
+        """
+        if request.form:
+            if 'name' not in request.form:
+                message = 'Did not supply name in the data field'
+                return jsonify({'error': message}), status.HTTP_400_BAD_REQUEST
+            name = request.form.get('name')
+
+            location = Location.query.get(location_id)
+            if location:
+                location.name = name
+                db.session.commit()
+                return jsonify(location), status.HTTP_200_OK
+            else:
+                message = 'Location with the ID {} does not exist in the database'.format(location_id)
+                return jsonify({'error': message}), status.HTTP_404_NOT_FOUND
+        else:
+            message = 'Request did not include a data form, try again'
+            return jsonify({'error': message}), status.HTTP_400_BAD_REQUEST
+
     @app.route('/api/v1/locations/<int:location_id>', methods=['DELETE'])
     def delete_location(location_id):
         """Delete a Location to the database

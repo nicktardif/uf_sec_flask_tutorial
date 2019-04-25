@@ -72,6 +72,45 @@ class CreateLocationTest(SampleTestCase):
         self.assertEquals(response.status_code, status.HTTP_400_BAD_REQUEST)
         self.assertEquals(response.json, jsonify(expected_response).json)
 
+class UpdateLocationTest(SampleTestCase):
+    def test_update_location(self):
+        populate_database(db)
+
+        location_id = 1
+        data = {'name': 'Sunspear'}
+        response = self.client.patch('/api/v1/locations/{}'.format(location_id), data=data)
+
+        location = Location.query.get(location_id)
+
+        self.assertEquals(response.status_code, status.HTTP_200_OK)
+        self.assertEquals(response.json, jsonify(location).json)
+
+    def test_update_location_invalid_id(self):
+        location_id = 1
+        data = {'name': 'Sunspear'}
+        response = self.client.patch('/api/v1/locations/{}'.format(location_id), data=data)
+
+        expected_response = {'error': 'Location with the ID {} does not exist in the database'.format(location_id)}
+        self.assertEquals(response.status_code, status.HTTP_404_NOT_FOUND)
+        self.assertEquals(response.json, jsonify(expected_response).json)
+
+    def test_update_location_no_name(self):
+        location_id = 1
+        data = {'library': 'Oldtown'}
+        response = self.client.patch('/api/v1/locations/{}'.format(location_id), data=data)
+
+        expected_response = {'error': 'Did not supply name in the data field'}
+        self.assertEquals(response.status_code, status.HTTP_400_BAD_REQUEST)
+        self.assertEquals(response.json, jsonify(expected_response).json)
+
+    def test_update_location_no_data(self):
+        location_id = 1
+        response = self.client.patch('/api/v1/locations/{}'.format(location_id))
+
+        expected_response = {'error': 'Request did not include a data form, try again'}
+        self.assertEquals(response.status_code, status.HTTP_400_BAD_REQUEST)
+        self.assertEquals(response.json, jsonify(expected_response).json)
+
 class DeleteLocationTest(SampleTestCase):
     def test_delete_location(self):
         populate_database(db)
