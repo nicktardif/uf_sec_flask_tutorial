@@ -12,7 +12,7 @@ pipenv install # Update the Python packages
 ./run.sh
 ```
 
-The API will be available at `localhost:8000/api/v1/`, and the Swagger docs will be available at `localhost:8000/api/v1/apidocs`
+The API will be available at `localhost:8000/api/v1/`, and the Swagger docs will be available at `localhost:8000/apidocs`
 
 You can use [Postman](https://www.getpostman.com/) as an easy way to test out the API
 
